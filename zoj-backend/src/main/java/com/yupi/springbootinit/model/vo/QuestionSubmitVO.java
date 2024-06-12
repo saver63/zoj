@@ -1,7 +1,7 @@
 package com.yupi.springbootinit.model.vo;
 
 import cn.hutool.json.JSONUtil;
-import com.yupi.springbootinit.model.dto.questionsumbit.JudgeInfo;
+import com.yupi.springbootinit.judge.codesandbox.model.JudgeInfo;
 import com.yupi.springbootinit.model.entity.QuestionSubmit;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;

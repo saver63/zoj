@@ -1,6 +1,6 @@
 package com.yupi.springbootinit.judge.codesandbox.impl;
 import java.util.List;
-import com.yupi.springbootinit.model.dto.questionsumbit.JudgeInfo;
+import com.yupi.springbootinit.judge.codesandbox.model.JudgeInfo;
 
 import com.yupi.springbootinit.judge.codesandbox.CodeSandbox;
 import com.yupi.springbootinit.judge.codesandbox.model.ExecuteCodeRequest;

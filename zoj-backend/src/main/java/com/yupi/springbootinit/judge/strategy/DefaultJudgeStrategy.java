@@ -5,7 +5,7 @@ import java.util.List;
 import cn.hutool.json.JSONUtil;
 import com.yupi.springbootinit.model.dto.question.JudgeCase;
 import com.yupi.springbootinit.model.dto.question.JudgeConfig;
-import com.yupi.springbootinit.model.dto.questionsumbit.JudgeInfo;
+import com.yupi.springbootinit.judge.codesandbox.model.JudgeInfo;
 import com.yupi.springbootinit.model.enums.JudgeInfoMessageEnum;
 
 /**

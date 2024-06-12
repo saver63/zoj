@@ -1,4 +1,4 @@
-package com.yupi.springbootinit.model.dto.questionsumbit;
+package com.yupi.zojcodesandbox.model;
 
 import lombok.Data;
 

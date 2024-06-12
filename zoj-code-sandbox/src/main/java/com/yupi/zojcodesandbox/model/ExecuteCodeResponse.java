@@ -1,4 +1,4 @@
-package com.yupi.springbootinit.judge.codesandbox.model;
+package com.yupi.zojcodesandbox.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
