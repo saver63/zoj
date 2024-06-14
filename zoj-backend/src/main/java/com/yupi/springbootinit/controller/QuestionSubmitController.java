@@ -36,7 +36,9 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/questionSubmit")
 @Slf4j
+@Deprecated
 public class QuestionSubmitController {
+
 
     @Resource
     private QuestionSubmitService questionSubmitService;
@@ -82,6 +84,7 @@ public class QuestionSubmitController {
         User loginUser = userService.getLoginUser(request);
         return ResultUtils.success(questionSubmitService.getQuestionSubmitVOPage(questionSubmitPage,loginUser));
     }
+
 
     // region 增删改查
 
