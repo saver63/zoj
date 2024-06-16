@@ -37,15 +37,19 @@ spring:
     multipart:
       # 大小限制
       max-file-size: 10MB
+  cloud:
+    nacos:
+      serverAddr: 127.0.0.1:8848
 server:
   address: 0.0.0.0
   port: 8103
   servlet:
-    context-path: /api
+    context-path: /api/question
     # cookie 30 天过期
     session:
       cookie:
         max-age: 2592000
+        path: /api
 mybatis-plus:
   configuration:
     map-underscore-to-camel-case: false
@@ -55,18 +59,9 @@ mybatis-plus:
       logic-delete-field: isDelete # 全局逻辑删除的实体字段名
       logic-delete-value: 1 # 逻辑已删除值（默认为 1）
       logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
-# 接口文档配置
-knife4j:
-  enable: true
-  openapi:
-    title: "接口文档"
-    version: 1.0
-    group:
-      default:
-        api-rule: package
-        api-rule-resources:
-          - com.yupi.springbootinit.controller
 # 代码沙箱配置
 codesandbox:
   type: remote
-
+# 接口文档配置
+knife4j:
+  enable: true

@@ -8,14 +8,14 @@ import com.zlz.zojbackendcommon.common.ErrorCode;
 import com.zlz.zojbackendcommon.constant.CommonConstant;
 import com.zlz.zojbackendcommon.exception.ThrowUtils;
 import com.zlz.zojbackendcommon.utils.SqlUtils;
-import com.zlz.zojbackendjudgeservice.service.QuestionService;
 import com.zlz.zojbackendmodel.dto.question.QuestionQueryRequest;
 import com.zlz.zojbackendmodel.entity.Question;
 import com.zlz.zojbackendmodel.entity.User;
 import com.zlz.zojbackendmodel.vo.QuestionVO;
 import com.zlz.zojbackendmodel.vo.UserVO;
 import com.zlz.zojbackendquestionservice.mapper.QuestionMapper;
-import com.zlz.zojbackenduserservice.service.UserService;
+import com.zlz.zojbackendquestionservice.service.QuestionService;
+import com.zlz.zojbackendserviceclient.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -41,7 +41,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
 
 
     @Resource
-    private UserService userService;
+    private UserFeignClient userFeignClient;
 
     /**
      * 校验数据是否合法
@@ -142,9 +142,9 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         Long userId = question.getUserId();
         User user = null;
         if (userId != null && userId > 0) {
-            user = userService.getById(userId);
+            user = userFeignClient.getById(userId);
         }
-        UserVO userVO = userService.getUserVO(user);
+        UserVO userVO = userFeignClient.getUserVO(user);
         questionVO.setUserVO(userVO);
         // endregion
 
@@ -174,7 +174,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
         // region 可选
         // 1. 关联查询用户信息
         Set<Long> userIdSet = questionList.stream().map(Question::getUserId).collect(Collectors.toSet());
-        Map<Long, List<User>> userIdUserListMap = userService.listByIds(userIdSet).stream()
+        Map<Long, List<User>> userIdUserListMap = userFeignClient.listByIds(userIdSet).stream()
                 .collect(Collectors.groupingBy(User::getId));
         // 填充信息
         questionVOList.forEach(questionVO -> {
@@ -183,7 +183,7 @@ public class QuestionServiceImpl extends ServiceImpl<QuestionMapper, Question> i
             if (userIdUserListMap.containsKey(userId)) {
                 user = userIdUserListMap.get(userId).get(0);
             }
-            questionVO.setUserVO(userService.getUserVO(user));
+            questionVO.setUserVO(userFeignClient.getUserVO(user));
         });
         // endregion
 

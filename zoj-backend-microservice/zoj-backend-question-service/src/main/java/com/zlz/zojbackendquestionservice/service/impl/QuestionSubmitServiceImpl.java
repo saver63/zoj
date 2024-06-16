@@ -19,8 +19,8 @@ import com.zlz.zojbackendmodel.vo.QuestionSubmitVO;
 import com.zlz.zojbackendquestionservice.mapper.QuestionSubmitMapper;
 import com.zlz.zojbackendquestionservice.service.QuestionService;
 import com.zlz.zojbackendquestionservice.service.QuestionSubmitService;
-import com.zlz.zojbackendserviceclient.service.JudgeService;
-import com.zlz.zojbackenduserservice.service.UserService;
+import com.zlz.zojbackendserviceclient.service.JudgeFeignClient;
+import com.zlz.zojbackendserviceclient.service.UserFeignClient;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.context.annotation.Lazy;
@@ -46,13 +46,13 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     private QuestionService questionService;
 
     @Resource
-    private UserService userService;
+    private UserFeignClient userFeignClient;
 
 
     @Resource
     //出现循环依赖，使用@Lazy懒加载注解
     @Lazy
-    private JudgeService judgeService;
+    private JudgeFeignClient judgeFeignClient;
 
     /**
      * 提交题目
@@ -94,7 +94,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         Long questionSubmitId = questionSubmit.getId();
         //执行判题服务实现
         CompletableFuture.runAsync(()->{
-            judgeService.doJudge(questionSubmitId);
+            judgeFeignClient.doJudge(questionSubmitId);
         });
         return questionSubmitId;
     }
@@ -149,7 +149,7 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
         QuestionSubmitVO questionSubmitVO = QuestionSubmitVO.objToVo(questionSubmit);
         //脱敏：仅本人和管理员能看见自己（提交userId和登录用户id不同）提交的代码
         long userId = loginUser.getId();
-        if (userId != questionSubmit.getUserId() && !userService.isAdmin(loginUser)){
+        if (userId != questionSubmit.getUserId() && !userFeignClient.isAdmin(loginUser)){
             questionSubmitVO.setCode(null);
         }
         return questionSubmitVO;
