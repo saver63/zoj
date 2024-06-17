@@ -17,6 +17,7 @@ import com.zlz.zojbackendmodel.enums.QuestionSubmitLanguageEnum;
 import com.zlz.zojbackendmodel.enums.QuestionSubmitStatusEnum;
 import com.zlz.zojbackendmodel.vo.QuestionSubmitVO;
 import com.zlz.zojbackendquestionservice.mapper.QuestionSubmitMapper;
+import com.zlz.zojbackendquestionservice.rabbitmq.MyMessageProducer;
 import com.zlz.zojbackendquestionservice.service.QuestionService;
 import com.zlz.zojbackendquestionservice.service.QuestionSubmitService;
 import com.zlz.zojbackendserviceclient.service.JudgeFeignClient;
@@ -48,6 +49,8 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
     @Resource
     private UserFeignClient userFeignClient;
 
+    @Resource
+    private MyMessageProducer myMessageProducer;
 
     @Resource
     //出现循环依赖，使用@Lazy懒加载注解
@@ -92,10 +95,12 @@ public class QuestionSubmitServiceImpl extends ServiceImpl<QuestionSubmitMapper,
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "数据插入失败");
         }
         Long questionSubmitId = questionSubmit.getId();
-        //执行判题服务实现
-        CompletableFuture.runAsync(()->{
-            judgeFeignClient.doJudge(questionSubmitId);
-        });
+        //发送消息
+        myMessageProducer.sendMessage("coce_exchange","my_routingKey",String.valueOf(questionSubmitId));
+//        //执行判题服务实现
+//        CompletableFuture.runAsync(()->{
+//            judgeFeignClient.doJudge(questionSubmitId);
+//        });
         return questionSubmitId;
     }
 

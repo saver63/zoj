@@ -40,6 +40,12 @@ spring:
   cloud:
     nacos:
       serverAddr: 127.0.0.1:8848
+  spring:
+    rabbitmq:
+      host: localhost
+      port: 5672
+      password: guest
+      username: guest
 server:
   address: 0.0.0.0
   port: 8103

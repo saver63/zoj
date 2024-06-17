@@ -1,4 +1,4 @@
-package com.zlz.zojbackendjudgeservice.judge.controller.inner;
+package com.zlz.zojbackendjudgeservice.controller.inner;
 
 import com.zlz.zojbackendjudgeservice.judge.JudgeService;
 import com.zlz.zojbackendmodel.entity.QuestionSubmit;
